@@ -1,0 +1,18 @@
+{
+  "first_name": "Avery",
+  "last_name": "O'Neil",
+  "date_of_birth": "03/14/1990",
+  "sex": "Other",
+  "phone_number": "2025550123",
+  "address_line_1": "123 Demo Lane",
+  "address_line_2": "Suite 4",
+  "city": "Washington",
+  "state": "DC",
+  "zip_code": "20001",
+  "email": "avery@example.com",
+  "insurance_provider": "Demo Health",
+  "insurance_member_id": "DEMO123",
+  "preferred_language": "English",
+  "emergency_contact_name": "Jordan Example",
+  "emergency_contact_phone": "2025550199"
+}

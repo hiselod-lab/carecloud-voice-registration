@@ -1,0 +1,165 @@
+[
+  {
+    "type": "function",
+    "async": false,
+    "function": {
+      "name": "update_registration",
+      "description": "Update only supplied new or corrected fields in this call\u2019s unsaved draft. Accept out-of-order details. Set reset=true only when caller requests start over. Any edit invalidates prior review. This does NOT save a patient.",
+      "strict": false,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "type": "string",
+                "description": "First name: letters, hyphens and apostrophes, 1-50 characters."
+              },
+              "last_name": {
+                "type": "string",
+                "description": "Last name: letters, hyphens and apostrophes, 1-50 characters."
+              },
+              "date_of_birth": {
+                "type": "string",
+                "description": "Nonfuture date, MM/DD/YYYY or YYYY-MM-DD. Ask when ambiguous."
+              },
+              "sex": {
+                "type": "string",
+                "enum": [
+                  "Male",
+                  "Female",
+                  "Other",
+                  "Decline to Answer"
+                ]
+              },
+              "phone_number": {
+                "type": "string",
+                "description": "10 US digits; +1 prefix may be supplied."
+              },
+              "address_line_1": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string",
+                "description": "Two-letter US state abbreviation or DC."
+              },
+              "zip_code": {
+                "type": "string",
+                "description": "Five-digit ZIP or ZIP+4; preserve leading zeros."
+              },
+              "email": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "address_line_2": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "insurance_provider": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "insurance_member_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Alphanumeric only."
+              },
+              "preferred_language": {
+                "type": "string",
+                "description": "English if omitted; do not send null."
+              },
+              "emergency_contact_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "emergency_contact_phone": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "10 US digits or null."
+              }
+            },
+            "additionalProperties": false
+          },
+          "reset": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "server": {
+      "url": "https://YOUR_PUBLIC_API_HOST/voice/webhook",
+      "credentialId": "YOUR_VAPI_CUSTOM_BEARER_CREDENTIAL_ID",
+      "timeoutSeconds": 10
+    }
+  },
+  {
+    "type": "function",
+    "async": false,
+    "function": {
+      "name": "review_registration",
+      "description": "Validate the complete draft and return every value in a readback plus a short-lived review token. Read the FULL readback aloud and WAIT for a new patient yes before confirming. No patient is saved.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    "server": {
+      "url": "https://YOUR_PUBLIC_API_HOST/voice/webhook",
+      "credentialId": "YOUR_VAPI_CUSTOM_BEARER_CREDENTIAL_ID",
+      "timeoutSeconds": 10
+    }
+  },
+  {
+    "type": "function",
+    "async": false,
+    "function": {
+      "name": "confirm_registration",
+      "description": "Save only the exact currently reviewed draft AFTER reading every detail and receiving a NEW explicit patient confirmation. Copy the latest review token and exact whole affirmative utterance. Never remove a correction or qualifier. Returns saved only after database commit. Retry identical arguments on uncertain transport failure.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "review_token": {
+            "type": "string",
+            "description": "Opaque token from the most recent review_registration response."
+          },
+          "confirmation": {
+            "type": "string",
+            "description": "The patient\u2019s exact entire NEW affirmative utterance after the full readback, such as Yes, please save. Never fabricate or paraphrase."
+          }
+        },
+        "required": [
+          "review_token",
+          "confirmation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "server": {
+      "url": "https://YOUR_PUBLIC_API_HOST/voice/webhook",
+      "credentialId": "YOUR_VAPI_CUSTOM_BEARER_CREDENTIAL_ID",
+      "timeoutSeconds": 10
+    }
+  }
+]
